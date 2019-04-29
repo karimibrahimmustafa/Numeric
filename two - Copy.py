@@ -4,14 +4,18 @@ import sympy as sp
 import matplotlib.pyplot as plt
 from sympy import sympify, Symbol
 curr_pos = 0
+import numpy as np
 
 def bisection(st,maxnum,maxer,xlf,xuf):
-  f = open("test.txt", "w")
-  f.write("Woops! I have deleted the content!")
+  file2 = open("test.txt","w") 
+  file2.write("Hello World") 
+  file2.close() 
+  fi = open("test.txt", "w")
   x=sp.Symbol('x')
   y=sp.Symbol('y')
   H = sympify(st)
   print(H)
+  table = []
   x1=[]
   y1=[]
   xu=[]
@@ -56,6 +60,7 @@ def bisection(st,maxnum,maxer,xlf,xuf):
    ys.append(f)
    print (xl[0],xu[0])
    print(f)
+   table.append([xuf,xlf,xk])
    if f3<0:
       xuf=xk
    else:
@@ -68,7 +73,14 @@ def bisection(st,maxnum,maxer,xlf,xuf):
     print("x="+str(i)+ " y = "+str(float(H.subs(x,i))))
     y1.append(float(H.subs(x,i)))
     i=i+add
-  f.close()
+  teams_list = ["Xu", "Xl", "Xr"]
+  row_format ="{:>15}" * (len(teams_list) + 1)
+  fi.write(row_format.format("", *teams_list))
+  print (row_format.format("", *teams_list))
+  for  row in table:
+    print (row_format.format("", *row))
+    fi.write(row_format.format("", *row))
+  fi.close()
   def key_event(e):
     global curr_pos
 
@@ -98,4 +110,4 @@ def bisection(st,maxnum,maxer,xlf,xuf):
   plt.title("Iteration "+str(curr_pos+1)+" xr= "+str(xks[curr_pos])+" errors= "+str(errors[curr_pos]*100)+"%")
   ax.plot([xl[curr_pos],xl[curr_pos]], [-200,200],'r',plots2[0][0], plots2[0][1],'g',[xu[curr_pos],xu[curr_pos]],[-200,200],'b',[-200,200],[0,0],'y')
   plt.show()
-bisection('3*(x^4)+6.1*(x^3)-2*(x^2)+3*x+2',50,1*10**-2,-1,-3)
+bisection('(3/2)*(x)-6-(1/2)*sin(2*x)',50,1*10**-3,4,5)

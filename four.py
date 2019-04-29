@@ -31,48 +31,32 @@ def newton(st,maxnum,maxer,xi):
   err=1
   maxsize=maxnum
   # loop to determine the points to draw the function
-  
+  while i <= 100 & i < 1.3*xi:
+    x1.append(i)
+    y1.append(float(H.subs(x,i)))
+    i=i+0.1
   # loop to get the value of xk
   for i in range(0, maxsize, 1):
   # test the error pound
-   
    fxi_value = float(H.subs(x,xi))
    fxi.append(fxi_value)
    dfxi_value = float(dif.subs(x,xi))
    dfxi.append(dfxi_value)
    x2=[xi]
    xi = xi - (fxi_value/dfxi_value)
-   print(xi)
-   xis.append(xi)
    x2.append(xi)
    y2=[fxi_value,0]
   # add this points to the plots
    plots.append((x2,y2))
-   if i==0:
+    if i==0:
      errors.append(1.0)
-   else:
-     err=abs((xis[i]-xis[i-1])/xis[i])
+    else:
+     err=abs((xi[i]-xi[i-1])/xi[i])
      errors.append(err)
    if(err<=maxer):
       break
    i=i+1   
-   minx=min(xis)-abs(min(xis))*0.3
-   maxx=max(xis)+abs(max(xis))*0.3
-   extra_ymin=float(H.subs(x,minx))
-   extra_ymax=float(H.subs(x,maxx))
-   maxy=  max(fxi)
-   miny= min(fxi)
-   maxy=max([maxy,extra_ymax])*1.3
-   miny=min([miny,extra_ymin])
-   if(miny<0.05):
-        miny=-0.1*maxy
   # function to move between plots
-  addition=(maxx-minx)/100
-  i=minx
-  while i <= maxx :
-    x1.append(i)
-    y1.append(float(H.subs(x,i)))
-    i=i+addition
   def key_event(e):
     global curr_pos
 
@@ -86,16 +70,12 @@ def newton(st,maxnum,maxer,xi):
     # set the axis limits to fit the plot
     axes = plt.gca()
     ax.cla()
-    axes.set_xlim([minx,maxx])
-    axes.set_ylim([miny,maxy])
-    print (maxx)
-    print (maxy)
-    print (minx)
-    print (miny)
+    axes.set_xlim([1.3*xl[0],1.3*xu[0]])
+    axes.set_ylim([1.3*min(ys),1.3*max(ys)])
     # plot the line and the curve
-    ax.plot(plots[curr_pos][0], plots[curr_pos][1],'r',plots[curr_pos][0], plots[curr_pos][1],'ro',plots2[1][0], plots2[1][1],'g',[-200,200],[0,0],'y',[xis[curr_pos],xis[curr_pos]],[-100,100],'b')
+    ax.plot(plots[curr_pos][0], plots[curr_pos][1],'r',plots[curr_pos][0], plots[curr_pos][1],'ro',plots2[1][0], plots2[1][1],'g',[-200,200],[0,0],'y')
     # put the title of plot
-    plt.title("Iteration "+str(curr_pos)+" xr= "+str(xis[curr_pos])+" errors= "+str(errors[curr_pos]*100)+"%")
+    plt.title("Iteration "+str(curr_pos+1)+" xr= "+str(xks[curr_pos])+" errors= "+str(errors[curr_pos]*100)+"%")
     fig.canvas.draw()   
   # the plot of curve
   plots2 = [(x1,y1),(x1,y1)]
@@ -103,12 +83,12 @@ def newton(st,maxnum,maxer,xi):
   # the same function to draw the plots
   fig = plt.figure()
   axes = plt.gca()
-  axes.set_xlim([minx,maxx])
-  axes.set_ylim([miny,maxy])
+  axes.set_xlim([1.3*xl[0],1.3*xu[0]])
+  axes.set_ylim([1.3*min(ys),1.3*max(ys)])
   fig.canvas.mpl_connect('key_press_event', key_event)
   ax = fig.add_subplot(111)
-  ax.plot(plots[curr_pos][0], plots[curr_pos][1],'r',plots[curr_pos][0], plots[curr_pos][1],'ro',plots2[1][0], plots2[1][1],'g',[-200,200],[0,0],'y',[xis[curr_pos],xis[curr_pos]],[-100,100],'b')
-  plt.title("Iteration "+str(curr_pos+1)+" xr= "+str(xis[curr_pos])+" errors= "+str(errors[curr_pos]*100)+"%")
+  ax.plot(plots[curr_pos][0], plots[curr_pos][1],'r',plots[curr_pos][0], plots[curr_pos][1],'ro',plots2[1][0], plots2[1][1],'g',[-200,200],[0,0],'y')
+  plt.title("Iteration "+str(curr_pos+1)+" xr= "+str(xks[curr_pos])+" errors= "+str(errors[curr_pos]*100)+"%")
   plt.show()
 # calling the function with (String Function , max number of iterations , max error, xl,xu)
-newton('(x^3)-0.165*x^2+3.933*10^-4',30,0.5*10**-2,0.05)
+newton('(x^4)+(3*x)-4',30,0.5*10**-2,0)
