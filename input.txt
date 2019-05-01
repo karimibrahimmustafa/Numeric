@@ -1,0 +1,4 @@
+e^x + 3*x
+bisection
+-0.4 0
+5
